@@ -17,7 +17,7 @@ function createServer() {
   app.post('/users', (req, res) => {
     const { name } = req.body;
 
-    if (!name) {
+    if (!name || typeof name !== 'string' || name.trim() === '') {
       return res.status(400).json({ message: 'Missing name' });
     }
 
@@ -49,7 +49,7 @@ function createServer() {
 
     const { name } = req.body;
 
-    if (!name) {
+    if (!name || typeof name !== 'string' || name.trim() === '') {
       return res.status(400).json({ message: 'Missing name' });
     }
 
@@ -158,6 +158,20 @@ function createServer() {
     }
 
     const { spentAt, title, amount, category, note } = req.body;
+
+    if (
+      (spentAt !== undefined && typeof spentAt !== 'string') ||
+      (title !== undefined &&
+        (typeof title !== 'string' || title.trim() === '')) ||
+      (amount !== undefined && typeof amount !== 'number') ||
+      (category !== undefined &&
+        (typeof category !== 'string' || category.trim() === '')) ||
+      (note !== undefined && typeof note !== 'string')
+    ) {
+      return res
+        .status(400)
+        .json({ message: 'Missing or invalid required fields' });
+    }
 
     if (spentAt !== undefined) {
       expense.spentAt = spentAt;
