@@ -114,7 +114,7 @@ function createServer() {
       typeof amount !== 'number' ||
       typeof category !== 'string' ||
       category.trim() === '' ||
-      typeof note !== 'string'
+      (note !== undefined && typeof note !== 'string')
     ) {
       return res
         .status(400)
